@@ -94,7 +94,9 @@ case "$DISTRO_PM" in
       
       sudo apt update
       sudo apt install -y gcc g++ \
-        git wget curl zsh proxychains openssh-server
+        git wget curl zsh proxychains openssh-server \
+	vim emacs gnome-tweak-tool \
+	;
       
       ;;
   2)  echo "You are using dnf."
