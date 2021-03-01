@@ -1,0 +1,11 @@
+# You can customize your own variables you like.
+
+# Example here:
+# Do you want to star this repo? (true/false)
+# export DO_YOU_WANT_TO_STAR_THIS_REPO=true
+
+# Salutatory
+export HELLO_WORLD="hello world"
+
+# Your Python 3 path
+export PYTHON3_PATH=/usr/bin
