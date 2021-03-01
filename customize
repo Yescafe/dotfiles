@@ -9,3 +9,12 @@ export HELLO_WORLD="hello world"
 
 # Your Python 3 path
 export PYTHON3_PATH=/usr/bin
+
+# Default proxy address
+export PROXY_IP_DEFAULT=127.0.0.1
+export PROXY_PORT_DEFAULT=7890
+
+# Default Git Account
+export GIT_NAME_DEFAULT="Ivan Chien"
+export GIT_EMAIL_DEFAULT="qyc027@gmail.com"
+
