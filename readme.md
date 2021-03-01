@@ -24,10 +24,36 @@ Firstly, you should set up proxy:
 # Do by yourself
 ```
 
-Then clone this repo recursively, recommend to clone at the home directory and hide it:
+~~Then clone this repo recursively, recommend to clone at the home directory and hide it:~~
 
 ```bash
 git clone --recursive https://github.com/Yescafe/dotfiles $HOME/.dotfiles
+```
+
+I know you don't have git now, so you can get the archive by this link: [https://github.com/Yescafe/dotfiles/archive/main.zip](https://github.com/Yescafe/dotfiles/archive/main.zip).
+
+If you have wget, you can:
+
+```bash
+wget https://github.com/Yescafe/dotfiles/archive/main.zip
+```
+
+then move it to your home, in file explorer or use shell:
+
+```bash
+mv /path/to/main.zip $HOME/main.zip
+```
+
+And unzip it:
+
+```bash
+cd $HOME && unzip ./main.zip
+```
+
+Or use file explorer to unzip it. Then rename it:
+
+```bash
+mv $HOME/dotfiles-main $HOME/.dotfiles
 ```
 
 Finally, execute 
@@ -37,3 +63,4 @@ cd $HOME/.dotfiles && ./setup.py
 ```
 
 and wait several minutes. Reboot your computer.
+
