@@ -18,10 +18,10 @@ In short, initializing a new machine or a VM is too troublesome. Now I can use t
 
 **DON'T CLOSE THE TERMINAL HALFWAY.**
 
-Firstly, I should set up proxy:
+Firstly, you should set up proxy:
 
 ```bash
-wget https://gitee.com/setup_proxy.py
+# Do by yourself
 ```
 
 Then clone this repo recursively, recommend to clone at the home directory and hide it:
@@ -36,4 +36,4 @@ Finally, execute
 cd $HOME/.dotfiles && ./setup.py
 ```
 
-and wait several minutes. Reboot my computer.
+and wait several minutes. Reboot your computer.
