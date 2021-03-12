@@ -18,3 +18,5 @@ export PROXY_PORT_DEFAULT=7890
 export GIT_NAME_DEFAULT="Ivan Chien"
 export GIT_EMAIL_DEFAULT="qyc027@gmail.com"
 
+# This repo path
+export PWD=$HOME/.dotfiles

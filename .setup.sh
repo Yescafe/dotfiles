@@ -85,18 +85,17 @@ case "$DISTRO_PM" in
   1)  echo "You are using apt."
       call_root
 
-      description "Use China Aliyun sources"
-      sudo sed -e 's|cn.archive.ubuntu.com|mirrors.aliyun.com|g' \
-        -e 's|archive.ubuntu.com|mirrors.aliyun.com|g' \
-        -e 's|security.ubuntu.com|mirrors.aliyun.com|g' \
-        -i.bak \
-        /etc/apt/sources.list
+      description "Use USTC sources"
+      sudo sed -i 's/cn.archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+      sudo sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+      # sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
       
       sudo apt update
-      sudo apt install -y gcc g++ \
+      sudo apt install -y gcc \
         git wget curl zsh proxychains openssh-server \
-	vim emacs gnome-tweak-tool \
-	;
+        vim emacs gnome-tweak-tool \
+        socat python3 python3-pip \
+        ;
       
       ;;
   2)  echo "You are using dnf."
@@ -141,7 +140,7 @@ if [[ -z $PROXY_PORT ]]; then
 fi
 echo -e "Your proxy address is $green$PROXY_IP:$PROXY_PORT$unset_color"
 
-# Proxy write into shell RCs and proxychains config
+# Proxy write into shell RCs, proxychains config, git config
 description "Apply proxy"
 echo -e "Your HOME directory is $green$HOME$unset_color"
 
@@ -157,6 +156,13 @@ if [[ "$SYS" == "linux" ]]; then
   sudo sed -i '$d' /etc/proxychains.conf
   sudo PROXY_IP=$PROXY_IP PROXY_PORT=$PROXY_PORT sh -c 'echo "http $PROXY_IP $PROXY_PORT" >> /etc/proxychains.conf'
 fi
+
+echo -e "Write proxy config into $green$HOME/.ssh/config$unset_color for github.com"
+mkdir -p $HOME/.ssh
+export PROXY_GIT_SOCAT_CONFIG="Host github.com\n  User git\n  ProxyCommand socat - PROXY:$PROXY_IP:%h:%p,proxyport=$PROXY_PORT"
+echo -e "$PROXY_GIT_SOCAT_CONFIG" > $HOME/.ssh/config
+mirror "$PROXY_GIT_SOCAT_CONFIG"
+pause
 
 # Enable sshd on Systemd Linux
 description "Enable sshd"
@@ -198,3 +204,79 @@ case $skg_choice in
   [yY]) echo -e "ssh-keygen -t rsa -C $GIT_EMAIL"
         ssh-keygen -t rsa -C $GIT_EMAIL;;
 esac
+
+# ZSH
+description "Configure ZSH"
+export http_proxy="$PROXY_IP:$PROXY_PORT"
+export https_proxy="$PROXY_IP:$PROXY_PORT"
+
+git clone -c core.eol=lf -c core.autocrlf=false \
+  -c fsck.zeroPaddedFilemode=ignore \
+  -c fetch.fsck.zeroPaddedFilemode=ignore \
+  -c receive.fsck.zeroPaddedFilemode=ignore \
+  --depth=1 --branch master https://github.com/ohmyzsh/ohmyzsh.git \
+  "$HOME/.oh-my-zsh"
+
+interact "chsh -s $(which zsh)\n"
+sudo chsh -s $(which zsh) $(whoami)
+
+if [[ "$SYS" == "linux" ]]; then  # Linux
+  ln -s $PWD/zsh/linux.zshrc $HOME/.zshrc
+  sed -i 's/__IP/$PROXY_IP/g' $PWD/zsh/linux.zshrc
+  sed -i 's/__PORT/$PROXY_PORT/g' $PWD/zsh/linux.zshrc
+else  # macOS
+  ln -s $PWD/zsh/darwin.zshrc $HOME/.zshrc
+  gsed -i 's/__IP/$PROXY_IP/g' $PWD/zsh/linux.zshrc
+  gsed -i 's/__PORT/$PROXY_PORT/g' $PWD/zsh/linux.zshrc
+fi
+
+# source $HOME/.zshrc
+export ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+
+if [[ "$SYS" == "darwin" ]]; then then  # only for macOS
+  description "Install CL tools for macOS"
+  # TODO
+fi
+
+cp $PWD/zsh/p10k.zsh $HOME/.p10k.zsh
+
+# Vim
+description "Configure Vim"
+ln -s $PWD/vim/vimrc $HOME/.vimrc
+git clone https://github.com/jacoborus/tender.vim $HOME/.vim/pack/vendor/start/tendor
+git clone https://github.com/scrooloose/nerdtree $HOME/.vim/pack/vendor/start/nerdtree
+git clone https://github.com/lvht/fzf $HOME/.vim/pack/vendor/start/fzf
+git clone https://github.com/lvht/mru $HOME/.vim/pack/vendor/start/mru
+git clone https://github.com/mileszs/ack.vim $HOME/.vim/pack/vendor/start/ack
+
+# RVM
+description "Configure RVM"
+gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+if [[ "$?" -ne 0 ]]; then
+  gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+fi
+curl -sSL https://get.rvm.io | bash
+
+# irbrc
+description "Configure Ruby CLI"
+ln -s $PWD/ruby/irbrc $HOME/.irbrc
+
+# pip
+description "Configure pip mirror"
+mkdir -p $HOME/.pip
+ln -s $PWD/python/pip.conf $HOME/.pip/pip.conf
+
+# Anaconda
+description "Congiure conda"
+ln -s $PWD/python/condarc $HOME/.condarc
+
+# thefuck
+description "Install thefuck"
+sudo pip3 install thefuck
+
+# Emacs
+description "Clone emacs.d"
+git clone https://github.com/Yescafe/emacs.d $HOME/.emacs.d
