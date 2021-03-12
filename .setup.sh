@@ -88,7 +88,7 @@ case "$DISTRO_PM" in
       description "Use USTC sources"
       sudo sed -i 's/cn.archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
       sudo sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
-      # sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+      sudo sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
       
       sudo apt update
       sudo apt install -y gcc \
@@ -222,14 +222,14 @@ sudo chsh -s $(which zsh) $(whoami)
 
 if [[ "$SYS" == "linux" ]]; then  # Linux
   ln -s $PWD/zsh/linux.zshrc $HOME/.zshrc
-  sed -i 's/__IP/'$PROXY_IP'/g' $PWD/zsh/linux.zshrc
-  sed -i 's/__PORT/'$PROXY_PORT'/g' $PWD/zsh/linux.zshrc
-  sed -i 's/__HOME/'$HOME'/g' $PWD/zsh/linux.zshrc
+  sed -i 's|__IP|'$PROXY_IP'|g' $PWD/zsh/linux.zshrc
+  sed -i 's|__PORT|'$PROXY_PORT'|g' $PWD/zsh/linux.zshrc
+  sed -i 's|__HOME|'$HOME'|g' $PWD/zsh/linux.zshrc
 else  # macOS
   ln -s $PWD/zsh/darwin.zshrc $HOME/.zshrc
-  gsed -i 's/__IP/'$PROXY_IP'/g' $PWD/zsh/darwin.zshrc
-  gsed -i 's/__PORT/'$PROXY_PORT'/g' $PWD/zsh/darwin.zshrc
-  gsed -i 's/__HOME/'$HOME'/g' $PWD/zsh/darwin.zshrc
+  gsed -i 's|__IP|'$PROXY_IP'|g' $PWD/zsh/darwin.zshrc
+  gsed -i 's|__PORT|'$PROXY_PORT'|g' $PWD/zsh/darwin.zshrc
+  gsed -i 's|__HOME|'$HOME'|g' $PWD/zsh/darwin.zshrc
 fi
 
 # source $HOME/.zshrc
@@ -255,17 +255,19 @@ git clone https://github.com/lvht/fzf $HOME/.vim/pack/vendor/start/fzf
 git clone https://github.com/lvht/mru $HOME/.vim/pack/vendor/start/mru
 git clone https://github.com/mileszs/ack.vim $HOME/.vim/pack/vendor/start/ack
 
-# RVM
-description "Configure RVM"
-gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-if [[ "$?" -ne 0 ]]; then
-  gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-fi
-curl -sSL https://get.rvm.io | bash
+if [[ "$DO_YOU_LIKE_INSTALLING_RUBY" -eq "true" ]]; then
+  # RVM
+  description "Configure RVM"
+  gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  if [[ "$?" -ne 0 ]]; then
+    gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  fi
+  curl -sSL https://get.rvm.io | bash
 
-# irbrc
-description "Configure Ruby CLI"
-ln -s $PWD/ruby/irbrc $HOME/.irbrc
+  # irbrc
+  description "Configure Ruby CLI"
+  ln -s $PWD/ruby/irbrc $HOME/.irbrc
+fi
 
 # pip
 description "Configure pip mirror"

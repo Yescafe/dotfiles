@@ -20,3 +20,6 @@ export GIT_EMAIL_DEFAULT="qyc027@gmail.com"
 
 # This repo path
 export PWD=$HOME/.dotfiles
+
+# Do you like installing Ruby? (true/false)
+export DO_YOU_LIKE_INSTALLING_RUBY=true
