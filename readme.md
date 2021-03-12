@@ -1,5 +1,7 @@
 # dotfiles - My personal environment profiles
 
+[中文](/readme_cn.md) | English
+
 *Thanks to my another repository [Yescafe/.whichrc](https://github.com/Yescafe/.whichrc), which is the origin of this repo.*
 
 ## What is this
