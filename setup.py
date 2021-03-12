@@ -58,3 +58,10 @@ if __name__ == '__main__':
   if ERR == 0:
     description('Finish.')
   exit(ERR // 256)
+
+print('Reboot now?[Y/n] ', end='')
+yn = input()
+if yn == 'y' or yn == 'Y':
+  cmd('sudo reboot')
+else:
+  print('Do with yourself, enjoy!')
