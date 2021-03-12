@@ -21,5 +21,8 @@ export GIT_EMAIL_DEFAULT="qyc027@gmail.com"
 # This repo path
 export PWD=$HOME/.dotfiles
 
+# Which nerd font/s do you like?
+export NERD_FONT_LIST=(FiraCode Iosevka)
+
 # Do you like installing Ruby? (true/false)
 export DO_YOU_LIKE_INSTALLING_RUBY=true

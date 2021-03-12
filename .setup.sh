@@ -95,6 +95,7 @@ case "$DISTRO_PM" in
         git wget curl zsh proxychains openssh-server \
         vim emacs gnome-tweak-tool \
         socat python3 python3-pip \
+        unzip g++\
         ;
       
       ;;
@@ -232,7 +233,6 @@ else  # macOS
   gsed -i 's|__HOME|'$HOME'|g' $PWD/zsh/darwin.zshrc
 fi
 
-# source $HOME/.zshrc
 export ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
@@ -245,6 +245,21 @@ if [[ "$SYS" == "darwin" ]]; then # only for macOS
 fi
 
 cp $PWD/zsh/p10k.zsh $HOME/.p10k.zsh
+
+# Nerd Font
+nerd_font_version=2.1.0
+nerd_font_names=${NERD_FONT_LIST[@]}
+
+mkdir -p $HOME/.local/share/fonts
+for fontname in ${nerd_font_names[@]}
+do
+  cd $HOME/.local/share/fonts && \
+  rm -vf $fontname.zip* && \
+  wget https://github.com/ryanoasis/nerd-fonts/releases/download/v$nerd_font_version/$fontname.zip && \
+  unzip $fontname.zip && \
+  rm -vf $fontname.zip* \
+  ;
+done
 
 # Vim
 description "Configure Vim"
