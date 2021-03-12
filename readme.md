@@ -62,5 +62,4 @@ Finally, execute
 cd $HOME/.dotfiles && ./setup.py
 ```
 
-and wait several minutes. Reboot your computer.
-
+and the guide will help you finish the setting up. 
