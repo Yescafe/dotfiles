@@ -1,6 +1,6 @@
 # dotfiles - 我的个人环境配置
 
-中文 | [English](/readme.md))
+中文 | [English](/readme.md)
 
 *首先感谢本仓库的来源 [Yescafe/.whichrc](https://github.com/Yescafe/.whichrc)，虽然也是我的仓库。目前它已经被归档了。*
 
@@ -46,13 +46,13 @@ wget https://github.com/Yescafe/dotfiles/archive/main.zip
 mv /path/to/main.zip $HOME/main.zip
 ```
 
-再解压它：
+再解压它。如果没有 `unzip` 指令，可以在文件管理器中解压：
 
 ```bash
 cd $HOME && unzip ./main.zip
 ```
 
-如果没有 `unzip` 指令，可以在文件管理器中解压：
+然后将它移动到下面指令中指定的位置：
 
 ```bash
 mv $HOME/dotfiles-main $HOME/.dotfiles
