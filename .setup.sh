@@ -222,12 +222,14 @@ sudo chsh -s $(which zsh) $(whoami)
 
 if [[ "$SYS" == "linux" ]]; then  # Linux
   ln -s $PWD/zsh/linux.zshrc $HOME/.zshrc
-  sed -i 's/__IP/$PROXY_IP/g' $PWD/zsh/linux.zshrc
-  sed -i 's/__PORT/$PROXY_PORT/g' $PWD/zsh/linux.zshrc
+  sed -i 's/__IP/'$PROXY_IP'/g' $PWD/zsh/linux.zshrc
+  sed -i 's/__PORT/'$PROXY_PORT'/g' $PWD/zsh/linux.zshrc
+  sed -i 's/__HOME/'$HOME'/g' $PWD/zsh/linux.zshrc
 else  # macOS
   ln -s $PWD/zsh/darwin.zshrc $HOME/.zshrc
-  gsed -i 's/__IP/$PROXY_IP/g' $PWD/zsh/linux.zshrc
-  gsed -i 's/__PORT/$PROXY_PORT/g' $PWD/zsh/linux.zshrc
+  gsed -i 's/__IP/'$PROXY_IP'/g' $PWD/zsh/darwin.zshrc
+  gsed -i 's/__PORT/'$PROXY_PORT'/g' $PWD/zsh/darwin.zshrc
+  gsed -i 's/__HOME/'$HOME'/g' $PWD/zsh/darwin.zshrc
 fi
 
 # source $HOME/.zshrc
@@ -235,8 +237,9 @@ export ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-autosuggestions.git $ZSH_CUSTOM/plugins/zsh-autosuggestions
+git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-if [[ "$SYS" == "darwin" ]]; then then  # only for macOS
+if [[ "$SYS" == "darwin" ]]; then # only for macOS
   description "Install CL tools for macOS"
   # TODO
 fi
